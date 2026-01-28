@@ -1,0 +1,16 @@
+{
+  "dataset": "Software Domain (Dataset_Challenge_1.xlsx)",
+  "num_samples": 84,
+  "model": "Helsinki-NLP/opus-mt-en-nl",
+  "metrics": {
+    "BLEU": 24.45,
+    "BLEU-1": 42.86,
+    "BLEU-2": 33.33,
+    "BLEU-3": 20.0,
+    "BLEU-4": 12.5,
+    "chrF": 76.35,
+    "TER": 34.32,
+    "Brevity_Penalty": 1.0
+  },
+  "timestamp": "2026-01-29T01:44:20.831242"
+}
