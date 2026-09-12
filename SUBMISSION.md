@@ -60,7 +60,7 @@ Provide all relevant metrics to ensure quality aspects are thoroughly addressed.
 ## 3. Repository Structure
 
 ```
-Domain-Specific-Fine-Tuning/
+translation-domain-finetuning/
 |
 +-- config.py                      # All hyperparameters and configuration
 +-- data_loader.py                 # Data loading for WMT16, FLORES, test set
@@ -124,8 +124,8 @@ Domain-Specific-Fine-Tuning/
 ### 5.1 Environment Setup
 
 ```bash
-git clone https://github.com/git-bonda108/Domain-Specific-Fine-Tuning.git
-cd Domain-Specific-Fine-Tuning
+git clone https://github.com/git-bonda108/translation-domain-finetuning.git
+cd translation-domain-finetuning
 pip install -r requirements.txt
 ```
 
@@ -234,4 +234,4 @@ openpyxl>=3.1.0
 
 ## 10. Repository
 
-**GitHub**: https://github.com/git-bonda108/Domain-Specific-Fine-Tuning
+**GitHub**: https://github.com/git-bonda108/translation-domain-finetuning

@@ -87,7 +87,7 @@ Evaluate with FLORES-devtest (general domain) and provided test set (software do
 ## Repository Structure
 
 ```
-Domain-Specific-Fine-Tuning/
+translation-domain-finetuning/
 +-- config.py                      # Configuration
 +-- data_loader.py                 # Data loading
 +-- encoder_decoder_trainer.py     # Task 1
@@ -110,8 +110,8 @@ Domain-Specific-Fine-Tuning/
 
 ### Setup
 ```bash
-git clone https://github.com/git-bonda108/Domain-Specific-Fine-Tuning.git
-cd Domain-Specific-Fine-Tuning
+git clone https://github.com/git-bonda108/translation-domain-finetuning.git
+cd translation-domain-finetuning
 pip install -r requirements.txt
 ```
 
@@ -156,4 +156,4 @@ target_modules = ["query_key_value", "dense"]
 
 ## Repository
 
-**GitHub**: https://github.com/git-bonda108/Domain-Specific-Fine-Tuning
+**GitHub**: https://github.com/git-bonda108/translation-domain-finetuning

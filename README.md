@@ -26,8 +26,8 @@ flowchart LR
 ## Quickstart
 
 ```bash
-git clone https://github.com/git-bonda108/Domain-Specific-Fine-Tuning.git
-cd Domain-Specific-Fine-Tuning
+git clone https://github.com/git-bonda108/translation-domain-finetuning.git
+cd translation-domain-finetuning
 pip install -r requirements.txt
 
 # Baseline evaluation only (no training; downloads the MarianMT model on first run)
