@@ -1,68 +1,84 @@
-# Domain-Specific Fine-Tuning Pipeline
+# Domain-Specific Fine-Tuning: Software-Domain EN→NL Translation
 
-## Challenge 1: Software Domain EN→NL Translation
+A fine-tuning and evaluation pipeline that adapts machine-translation models to the software/technology domain for English→Dutch, and measures the result with standard MT metrics.
 
-A complete fine-tuning pipeline for domain-specific machine translation from English to Dutch, targeting the software/technology domain.
+It exists to answer a concrete question: how well do two contrasting adaptation strategies — full fine-tuning of a compact encoder-decoder model versus LoRA adapters on a multilingual decoder-only model — perform on software-domain text (UI strings, product specifications) compared with a strong off-the-shelf baseline? The audience is ML engineers working on domain adaptation for translation.
 
----
+## Architecture at a glance
 
-## Overview
+- **Orchestration pattern:** sequential batch pipeline, dispatched by CLI mode. `main.py` runs up to three phases in order: (1) full fine-tune of MarianMT, (2) LoRA fine-tune of BLOOM-560M, (3) evaluation of baseline and fine-tuned models on two test sets. Nothing runs in parallel or asynchronously; each phase consumes the previous phase's output in-process.
+- **Models:** `Helsinki-NLP/opus-mt-en-nl` (MarianMT, encoder-decoder, full fine-tune) and `bigscience/bloom-560m` (decoder-only, LoRA via PEFT). Training loops are built on PyTorch Lightning.
+- **State:** no service or session state. State is filesystem artifacts — Lightning checkpoints, saved models/adapters under `outputs/`, TensorBoard logs, and JSON/XLSX evaluation reports. Configuration is a tree of Python dataclasses in `config.py`; runs are seeded (`seed=42`, `deterministic=True`).
+- **Retrieval:** none. Data comes from Hugging Face datasets (with a fallback chain) and a local Excel test set.
 
-This project implements:
+```mermaid
+flowchart LR
+    A[main.py --mode] --> B[EncoderDecoderTrainer\nMarianMT full FT]
+    A --> C[DecoderOnlyTrainer\nBLOOM-560M + LoRA]
+    B --> D[TranslationEvaluator]
+    C --> D
+    E[DataLoaderFactory\nHF datasets + Excel test set] --> B
+    E --> C
+    E --> D
+    D --> F[outputs/evaluation\nJSON + XLSX + TXT reports]
+```
 
-1. **Encoder-Decoder Fine-Tuning** - MarianMT with PyTorch Lightning
-2. **Decoder-Only Fine-Tuning with LoRA** - BLOOM-560M with PEFT
-3. **Comprehensive Evaluation** - BLEU, COMET, chrF, TER metrics
-
----
-
-## Quick Start
+## Quickstart
 
 ```bash
-# Clone repository
 git clone https://github.com/git-bonda108/Domain-Specific-Fine-Tuning.git
 cd Domain-Specific-Fine-Tuning
-
-# Install dependencies
 pip install -r requirements.txt
 
-# Run baseline evaluation
+# Baseline evaluation only (no training; downloads the MarianMT model on first run)
 python run_evaluation.py
-
-# Run full training pipeline
-python main.py --mode all
 ```
 
----
-
-## Project Structure
+`run_evaluation.py` loads the 84-sentence software-domain test set from `data/Dataset_Challenge_1.xlsx`, translates it with the untuned baseline, and prints progress followed by a metrics block:
 
 ```
-Domain-Specific-Fine-Tuning/
-├── config.py                    # Configuration
-├── data_loader.py               # Data loading
-├── encoder_decoder_trainer.py   # Task 1: MarianMT
-├── decoder_only_trainer.py      # Task 2: BLOOM + LoRA
-├── evaluation.py                # Task 3: Metrics
-├── main.py                      # Main script
-├── run_evaluation.py            # Quick evaluation
-├── requirements.txt             # Dependencies
-├── SUBMISSION.md                # Assessment submission document
-├── data/
-│   └── Dataset_Challenge_1.xlsx
-├── notebooks/
-│   └── 01_domain_finetuning_demo.ipynb
-└── outputs/
-    └── evaluation/
-        ├── baseline_metrics.json
-        └── baseline_translations.xlsx
+======================================================================
+EVALUATION RESULTS - SOFTWARE DOMAIN TEST SET
+======================================================================
+
+Model: Helsinki-NLP/opus-mt-en-nl
+Test Samples: 84
+
+Metrics:
+  BLEU:         24.45
+  ...
+  chrF:         76.35
+  TER:          34.32
 ```
 
----
+Results are written to `outputs/evaluation/baseline_metrics.json` and `outputs/evaluation/baseline_translations.xlsx`.
+
+Training runs:
+
+```bash
+python main.py --mode all        # both trainings + evaluation
+python main.py --mode encoder    # MarianMT full fine-tune + evaluation
+python main.py --mode decoder    # BLOOM LoRA fine-tune + evaluation
+python main.py --mode baseline   # baseline evaluation only
+python main.py --mode evaluate   # evaluation entry point (see note below)
+```
+
+Note: `--mode evaluate` accepts `--encoder-model-path`/`--decoder-model-path`, but the loading of pre-trained checkpoints behind those flags is not implemented (`main.py` contains placeholder branches), so that mode currently evaluates the baseline only. Use `--mode encoder`/`--mode decoder` to train and evaluate in one run.
+
+## Configuration
+
+All configuration lives in dataclasses in `config.py` (`DataConfig`, `EncoderDecoderConfig`, `DecoderOnlyConfig`, `EvaluationConfig`, `TrainingConfig`) — edit that file to change models, hyperparameters, LoRA settings, or metric toggles. The pipeline reads no environment variables of its own. Two optional integrations use their libraries' standard credentials:
+
+| Variable | Required | Purpose | Where to get it |
+|----------|----------|---------|-----------------|
+| `WANDB_API_KEY` | Only if `TrainingConfig.use_wandb = True` (default `False`) | Weights & Biases run logging via Lightning's `WandbLogger` | wandb.ai account settings |
+| `HF_TOKEN` | No — all referenced models/datasets are public | Hugging Face Hub authentication, if you swap in gated models | huggingface.co settings |
+
+Hardware selection is automatic (`CUDA` → `MPS` → `CPU`), overridable with `--device`.
 
 ## Results
 
-### Software Domain Test Set (84 samples)
+Baseline (untuned `Helsinki-NLP/opus-mt-en-nl`) on the software-domain test set, as recorded in `outputs/evaluation/baseline_metrics.json`:
 
 | Metric | Score |
 |--------|-------|
@@ -70,42 +86,30 @@ Domain-Specific-Fine-Tuning/
 | chrF | 76.35 |
 | TER | 34.32 |
 
----
+Fine-tuned results are produced by the training modes and are not checked into the repository. See [docs/EVALUATION.md](docs/EVALUATION.md) for the full metrics pipeline and its limitations.
 
-## Models
+## Repository map
 
-| Task | Model | Parameters |
-|------|-------|------------|
-| Encoder-Decoder | Helsinki-NLP/opus-mt-en-nl | 148M |
-| Decoder-Only | bigscience/bloom-560m + LoRA | 560M (1.2M trainable) |
-
----
-
-## Usage
-
-```bash
-# Encoder-decoder training only
-python main.py --mode encoder
-
-# Decoder-only with LoRA only
-python main.py --mode decoder
-
-# Evaluation only
-python main.py --mode evaluate
-
-# Full pipeline
-python main.py --mode all
+```
+config.py                    # All hyperparameters (dataclasses)
+data_loader.py               # Training data (HF datasets + fallbacks), test sets, Dataset/DataLoader
+encoder_decoder_trainer.py   # MarianMT full fine-tune (PyTorch Lightning)
+decoder_only_trainer.py      # BLOOM-560M LoRA fine-tune (PEFT + Lightning)
+evaluation.py                # BLEU / chrF / TER / COMET evaluator and model comparison
+main.py                      # CLI entry point, phase orchestration
+run_evaluation.py            # Standalone baseline evaluation script
+notebooks/01_domain_finetuning_demo.ipynb   # Interactive walkthrough of the same pipeline
+data/Dataset_Challenge_1.xlsx               # Software-domain test set (84 EN-NL pairs)
+outputs/evaluation/                         # Committed baseline metrics + translations
 ```
 
----
+## Further documentation
 
-## Requirements
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — component map, data flow, orchestration and design trade-offs
+- [docs/EVALUATION.md](docs/EVALUATION.md) — what is tested today, edge cases handled in code, and a proposed evaluation harness
+- [docs/HARDENING.md](docs/HARDENING.md) — current security/operational posture and a staged path to production
 
-- Python 3.10+
-- PyTorch 2.0+
-- CUDA/MPS for GPU acceleration
-
----
+`SUBMISSION.md` and `RESULTS_SUMMARY.md` are the original assessment write-ups this repository was built for.
 
 ## Author
 
