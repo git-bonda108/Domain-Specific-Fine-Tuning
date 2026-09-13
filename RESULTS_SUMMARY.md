@@ -3,7 +3,6 @@
 ## Challenge 1: Software Domain EN→NL Translation
 
 **Submitted by**: Satya Bonda  
-**Position**: Mid-Level AI/ML Engineer
 
 ---
 

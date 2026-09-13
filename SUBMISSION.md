@@ -2,7 +2,6 @@
 ## Challenge 1: Domain-Specific Fine-Tuning
 
 **Submitted by**: Satya Bonda  
-**Position**: Mid-Level AI/ML Engineer
 
 ---
 
