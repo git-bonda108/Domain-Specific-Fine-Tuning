@@ -2,7 +2,7 @@
 Decoder-Only Fine-Tuning Pipeline with LoRA
 Using BLOOM/LLaMA-style models with PEFT for EN→NL translation
 
-Challenge 1, Task 2: Decoder-only model fine-tuning with LoRA techniques
+Track 2: Decoder-only model fine-tuning with LoRA techniques
 """
 
 import os

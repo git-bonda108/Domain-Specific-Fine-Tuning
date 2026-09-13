@@ -1,6 +1,6 @@
 """
 Configuration for Domain-Specific Fine-Tuning Pipeline
-Challenge 1: Software Domain EN→NL Translation
+Software Domain EN→NL Translation — Benchmark
 """
 
 from dataclasses import dataclass, field

@@ -2,7 +2,7 @@
 Encoder-Decoder Fine-Tuning Pipeline
 Using MarianMT (Helsinki-NLP/opus-mt-en-nl) with PyTorch Lightning
 
-Challenge 1, Task 1: Software domain-specific fine-tuning for EN→NL translation
+Track 1: Software domain-specific fine-tuning for EN→NL translation
 """
 
 import os

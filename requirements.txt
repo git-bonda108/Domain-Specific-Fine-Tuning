@@ -1,5 +1,5 @@
 # Domain-Specific Fine-Tuning for EN→NL Translation
-# Challenge 1: Software Domain Fine-Tuning
+# Software-domain fine-tuning pipeline
 
 # Core ML Frameworks
 torch>=2.0.0

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Quick evaluation script for baseline model on software domain test set
-Produces results for the interview challenge
+Produces benchmark results for the software-domain test set
 """
 
 import os
@@ -18,7 +18,7 @@ warnings.filterwarnings('ignore')
 
 print("=" * 70)
 print("Domain-Specific Fine-Tuning - Evaluation Pipeline")
-print("Challenge 1: Software Domain EN→NL Translation")
+print("Software Domain EN→NL Translation — Benchmark")
 print("=" * 70)
 
 # System info
