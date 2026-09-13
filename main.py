@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Domain-Specific Fine-Tuning Pipeline
-Challenge 1: Software Domain EN→NL Translation
+Software Domain EN→NL Translation — Benchmark
 
 This script orchestrates the complete fine-tuning and evaluation pipeline:
 1. Encoder-Decoder model fine-tuning (MarianMT)
@@ -45,7 +45,7 @@ def print_banner():
 ╔══════════════════════════════════════════════════════════════════════╗
 ║                                                                      ║
 ║           Domain-Specific Fine-Tuning Pipeline                       ║
-║           Challenge 1: Software Domain EN→NL Translation             ║
+║       Software Domain EN→NL Translation — Benchmark Pipeline        ║
 ║                                                                      ║
 ║           • Encoder-Decoder (MarianMT)                               ║
 ║           • Decoder-Only with LoRA (BLOOM)                           ║

@@ -2,7 +2,7 @@
 Evaluation Module for Translation Quality Assessment
 Computes BLEU, COMET, chrF, and TER metrics on FLORES and Software domain test sets
 
-Challenge 1, Task 3: Comprehensive evaluation with relevant metrics
+Track 3: Comprehensive evaluation with relevant metrics
 """
 
 import json
