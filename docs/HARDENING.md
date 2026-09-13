@@ -49,7 +49,7 @@ Each stage assumes the previous one. "Production" here means: scheduled or multi
 - Containerize the pipeline (CUDA base image, locked dependencies) so training runs on shared GPU infrastructure instead of a developer laptop; MPS/CPU paths remain for local iteration.
 - If fine-tuned models are served, serving is a separate system: the saved MarianMT weights and BLOOM LoRA adapters under `outputs/` are the hand-off artifacts; add authenticated access, rate limiting, and input length caps at that boundary (none of which belong in this training repo).
 - Review and record license obligations of base models and corpora actually used (Hub model cards and dataset cards for `opus-mt-en-nl`, `bloom-560m`, and whichever corpus the resolved training run used) before commercial redistribution of fine-tuned weights.
-- If future test sets are derived from customer content, treat them as data assets with access control — the current committed test set is the assessment-provided challenge dataset.
+- If future test sets are derived from customer content, treat them as data assets with access control — the current committed test set is a public-domain benchmark sample.
 
 ## Secrets removed from HEAD
 

@@ -17,7 +17,7 @@ class DataConfig:
     software_domain_dataset: str = "yhavinga/ccmatrix"  # Alternative Dutch data
     
     # Test data paths
-    software_test_path: str = "data/Dataset_Challenge_1.xlsx"
+    software_test_path: str = "data/software_domain_test_set.xlsx"
     flores_dataset: str = "facebook/flores"
     flores_subset: str = "eng_Latn-nld_Latn"
     

@@ -26,15 +26,15 @@ flowchart LR
 ## Quickstart
 
 ```bash
-git clone https://github.com/git-bonda108/translation-domain-finetuning.git
-cd translation-domain-finetuning
+git clone https://github.com/git-bonda108/domain-specific-llm-finetuning.git
+cd domain-specific-llm-finetuning
 pip install -r requirements.txt
 
 # Baseline evaluation only (no training; downloads the MarianMT model on first run)
 python run_evaluation.py
 ```
 
-`run_evaluation.py` loads the 84-sentence software-domain test set from `data/Dataset_Challenge_1.xlsx`, translates it with the untuned baseline, and prints progress followed by a metrics block:
+`run_evaluation.py` loads the 84-sentence software-domain test set from `data/software_domain_test_set.xlsx`, translates it with the untuned baseline, and prints progress followed by a metrics block:
 
 ```
 ======================================================================
@@ -99,7 +99,7 @@ evaluation.py                # BLEU / chrF / TER / COMET evaluator and model com
 main.py                      # CLI entry point, phase orchestration
 run_evaluation.py            # Standalone baseline evaluation script
 notebooks/01_domain_finetuning_demo.ipynb   # Interactive walkthrough of the same pipeline
-data/Dataset_Challenge_1.xlsx               # Software-domain test set (84 EN-NL pairs)
+data/software_domain_test_set.xlsx               # Software-domain test set (84 EN-NL pairs)
 outputs/evaluation/                         # Committed baseline metrics + translations
 ```
 
@@ -109,7 +109,7 @@ outputs/evaluation/                         # Committed baseline metrics + trans
 - [docs/EVALUATION.md](docs/EVALUATION.md) — what is tested today, edge cases handled in code, and a proposed evaluation harness
 - [docs/HARDENING.md](docs/HARDENING.md) — current security/operational posture and a staged path to production
 
-`SUBMISSION.md` and `RESULTS_SUMMARY.md` are the original assessment write-ups this repository was built for.
+`RESULTS_SUMMARY.md` is the benchmark report for this pipeline.
 
 ## Author
 

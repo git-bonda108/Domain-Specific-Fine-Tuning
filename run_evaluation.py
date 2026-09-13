@@ -42,7 +42,7 @@ print("\n" + "=" * 70)
 print("Loading Software Domain Test Set...")
 print("=" * 70)
 
-test_data_path = "data/Dataset_Challenge_1.xlsx"
+test_data_path = "data/software_domain_test_set.xlsx"
 df = pd.read_excel(test_data_path)
 sources = df["English Source"].tolist()
 references = df["Reference Translation"].tolist()
@@ -127,7 +127,7 @@ print("EVALUATION RESULTS - SOFTWARE DOMAIN TEST SET")
 print("=" * 70)
 
 results = {
-    "dataset": "Software Domain (Dataset_Challenge_1.xlsx)",
+    "dataset": "Software Domain (software_domain_test_set.xlsx)",
     "num_samples": len(sources),
     "model": model_name,
     "metrics": {
