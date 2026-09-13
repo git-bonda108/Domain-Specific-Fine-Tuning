@@ -75,7 +75,7 @@ None of the following exists yet; it is the harness this pipeline should have.
 A frozen, versioned split committed to the repository (or pinned by hash):
 
 - Shape: `{id, source_en, reference_nl, sub_domain (ui_string | spec | error_message), length_bucket}`.
-- Sources: the existing 84-sample challenge set as the software-domain slice, plus a pinned FLORES devtest snapshot as the general-domain regression slice — the second slice exists to catch catastrophic forgetting of general-domain quality after domain fine-tuning.
+- Sources: the existing 84-sample software-domain test set as the software-domain slice, plus a pinned FLORES devtest snapshot as the general-domain regression slice — the second slice exists to catch catastrophic forgetting of general-domain quality after domain fine-tuning.
 
 ### 3. Gates
 
